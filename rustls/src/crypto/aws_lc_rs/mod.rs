@@ -158,6 +158,7 @@ pub mod cipher_suite {
 static SUPPORTED_SIG_ALGS: WebPkiSupportedAlgorithms = WebPkiSupportedAlgorithms {
     all: &[
         webpki_algs::ECDSA_P256_SHA256,
+        #[cfg(not(feature = "fips"))]
         webpki_algs::ECDSA_P256K1_SHA256,
         webpki_algs::ECDSA_P256_SHA384,
         webpki_algs::ECDSA_P256_SHA512,
@@ -196,6 +197,7 @@ static SUPPORTED_SIG_ALGS: WebPkiSupportedAlgorithms = WebPkiSupportedAlgorithms
                 webpki_algs::ECDSA_P521_SHA256,
             ],
         ),
+        #[cfg(not(feature = "fips"))]
         (
             SignatureScheme::ECDSA_P256K1_SHA256,
             &[webpki_algs::ECDSA_P256K1_SHA256],
