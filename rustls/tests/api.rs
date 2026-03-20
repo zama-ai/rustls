@@ -1888,6 +1888,7 @@ fn default_signature_schemes(version: ProtocolVersion) -> Vec<SignatureScheme> {
 
     if provider_is_aws_lc_rs() {
         v.insert(2, SignatureScheme::ECDSA_NISTP521_SHA512);
+        v.insert(2, SignatureScheme::ECDSA_P256K1_SHA256);
     }
 
     if version == ProtocolVersion::TLSv1_2 {
