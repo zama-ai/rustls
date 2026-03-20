@@ -505,6 +505,7 @@ enum_builder! {
         ECDSA_SHA1_Legacy => 0x0203,
         RSA_PKCS1_SHA256 => 0x0401,
         ECDSA_NISTP256_SHA256 => 0x0403,
+        ECDSA_P256K1_SHA256 => 0x0404,
         RSA_PKCS1_SHA384 => 0x0501,
         ECDSA_NISTP384_SHA384 => 0x0503,
         RSA_PKCS1_SHA512 => 0x0601,

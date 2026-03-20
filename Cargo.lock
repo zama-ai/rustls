@@ -277,7 +277,7 @@ dependencies = [
  "bitflags",
  "cexpr",
  "clang-sys",
- "itertools 0.13.0",
+ "itertools 0.10.5",
  "log",
  "prettyplease",
  "proc-macro2",
@@ -2822,8 +2822,7 @@ dependencies = [
 [[package]]
 name = "rustls-webpki"
 version = "0.103.9"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d7df23109aa6c1567d1c575b9952556388da57401e4ace1d15f79eedad0d8f53"
+source = "git+https://github.com/zama-ai/webpki.git?branch=rel-0.103#9558707f39b97060b527966de76943e7ed40a022"
 dependencies = [
  "aws-lc-rs",
  "ring",

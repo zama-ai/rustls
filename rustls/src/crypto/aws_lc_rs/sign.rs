@@ -50,6 +50,14 @@ pub fn any_ecdsa_type(der: &PrivateKeyDer<'_>) -> Result<Arc<dyn SigningKey>, Er
         return Ok(Arc::new(ecdsa_p256));
     }
 
+    if let Ok(ecdsa_p256k1) = EcdsaSigningKey::new(
+        der,
+        SignatureScheme::ECDSA_P256K1_SHA256,
+        &signature::ECDSA_P256K1_SHA256_ASN1_SIGNING,
+    ) {
+        return Ok(Arc::new(ecdsa_p256k1));
+    }
+
     if let Ok(ecdsa_p384) = EcdsaSigningKey::new(
         der,
         SignatureScheme::ECDSA_NISTP384_SHA384,
@@ -262,6 +270,7 @@ impl SigningKey for EcdsaSigningKey {
     fn public_key(&self) -> Option<SubjectPublicKeyInfoDer<'_>> {
         let id = match self.scheme {
             SignatureScheme::ECDSA_NISTP256_SHA256 => alg_id::ECDSA_P256,
+            SignatureScheme::ECDSA_P256K1_SHA256 => alg_id::ECDSA_P256K1,
             SignatureScheme::ECDSA_NISTP384_SHA384 => alg_id::ECDSA_P384,
             SignatureScheme::ECDSA_NISTP521_SHA512 => alg_id::ECDSA_P521,
             _ => unreachable!(),
