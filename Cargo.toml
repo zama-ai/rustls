@@ -106,4 +106,4 @@ lto = true
 # against the latest _published_ copy.
 [patch.crates-io]
 rustls = { path = "rustls" }
-rustls-webpki = { git = 'https://github.com/zama-ai/webpki.git', branch = 'rel-0.103-k256' }
+rustls-webpki = { git = 'https://github.com/zama-ai/webpki.git', branch = 'rel-0.103' }
