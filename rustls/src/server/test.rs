@@ -1,5 +1,5 @@
-use std::prelude::v1::*;
-use std::vec;
+use alloc::boxed::Box;
+use alloc::vec;
 
 use super::ServerConnectionData;
 use crate::common_state::Context;
@@ -64,6 +64,8 @@ fn test_process_client_hello(hello: ClientHelloPayload) -> Result<(), Error> {
 
 #[macro_rules_attribute::apply(test_for_each_provider)]
 mod tests {
+    use alloc::vec::Vec;
+
     use super::super::*;
     use crate::common_state::KxState;
     use crate::crypto::{
@@ -193,7 +195,7 @@ mod tests {
         conn.process_new_packets().unwrap();
 
         let KxState::Start(skxg) = &conn.kx_state else {
-            self::panic!("unexpected kx_state");
+            panic!("unexpected kx_state");
         };
         assert_eq!(skxg.name(), FAKE_FFDHE_GROUP.name());
     }
