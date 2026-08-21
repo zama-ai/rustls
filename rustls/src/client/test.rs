@@ -699,7 +699,7 @@ fn client_hello_sent_for_config(config: ClientConfig) -> Result<ClientHelloPaylo
                 },
             ..
         } => Ok(ch),
-        other => self::panic!("unexpected message {other:?}"),
+        other => panic!("unexpected message {other:?}"),
     }
 }
 
