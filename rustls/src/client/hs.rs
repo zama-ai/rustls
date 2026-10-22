@@ -235,6 +235,17 @@ fn emit_client_hello_for_retry(
         ..Default::default()
     });
 
+    if !config
+        .crypto_provider()
+        .cipher_suites
+        .iter()
+        .any(|cs| cs.tls13().is_some())
+    {
+        if let Some(schemes) = &mut exts.signature_schemes {
+            schemes.retain(|scheme| scheme.algorithm().is_some());
+        }
+    }
+
     match extra_exts.transport_parameters.clone() {
         Some(TransportParameters::Quic(v)) => exts.transport_parameters = Some(v),
         Some(TransportParameters::QuicDraft(v)) => exts.transport_parameters_draft = Some(v),
@@ -977,20 +988,18 @@ impl ExpectServerHelloOrHelloRetryRequest {
         cx.common.handshake_kind = Some(HandshakeKind::FullWithHelloRetryRequest);
 
         // If we offered ECH, we need to confirm that the server accepted it.
-        match (self.next.ech_state.as_ref(), cs.tls13()) {
-            // If the server did not confirm, then note the new ECH status but
-            // continue the handshake. We will abort with an ECH required error
-            // at the end.
-            (Some(ech_state), Some(tls13_cs))
-                if !ech_state.confirm_hrr_acceptance(hrr, tls13_cs, cx.common)? =>
-            {
-                cx.data.ech_status = EchStatus::Rejected
-            }
-            (Some(_), None) => {
+        if let Some(ech_state) = self.next.ech_state.as_mut() {
+            let Some(tls13_cs) = cs.tls13() else {
                 unreachable!("ECH state should only be set when TLS 1.3 was negotiated")
+            };
+
+            if !ech_state.confirm_hrr_acceptance(hrr, tls13_cs, cx.common)? {
+                // If the server did not confirm, then note the new ECH status but
+                // continue the handshake. We will abort with an ECH required error
+                // at the end.
+                cx.data.ech_status = EchStatus::Rejected;
             }
-            _ => {}
-        };
+        }
 
         // This is the draft19 change where the transcript became a tree
         let transcript = self
