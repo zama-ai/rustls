@@ -275,7 +275,7 @@ dependencies = [
 
 [[package]]
 name = "rustls"
-version = "0.23.43"
+version = "0.23.46"
 dependencies = [
  "log",
  "once_cell",
@@ -313,9 +313,8 @@ dependencies = [
 
 [[package]]
 name = "rustls-webpki"
-version = "0.103.14"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0527518605e68109d875e248ea259b6758801cf165e4b2c2733ae3b51f12535a"
+version = "0.103.16"
+source = "git+https://github.com/zama-ai/webpki.git?branch=rel-0.103#d67a86c9fd00966faee16402973f11f7b825e606"
 dependencies = [
  "ring",
  "rustls-pki-types",
