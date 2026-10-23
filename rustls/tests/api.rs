@@ -1513,6 +1513,8 @@ fn server_cert_resolve_reduces_sigalgs_for_ecdsa_ciphersuite() {
             vec![
                 SignatureScheme::ECDSA_NISTP384_SHA384,
                 SignatureScheme::ECDSA_NISTP256_SHA256,
+                #[cfg(not(feature = "fips"))]
+                SignatureScheme::ECDSA_P256K1_SHA256,
                 SignatureScheme::ECDSA_NISTP521_SHA512,
                 SignatureScheme::ED25519,
             ]

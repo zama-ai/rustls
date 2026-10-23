@@ -1394,8 +1394,12 @@ fn after_read(opts: &Options, sess: &mut Connection, conn: &mut net::TcpStream) 
 
 fn orderly_close(conn: &mut net::TcpStream) {
     // assuming we just flush()'d, we will write no more.
-    conn.shutdown(net::Shutdown::Write)
-        .unwrap();
+    match conn.shutdown(net::Shutdown::Write) {
+        Ok(()) => {}
+        // The peer may have already closed the connection after receiving our alert.
+        Err(err) if err.kind() == io::ErrorKind::NotConnected => {}
+        Err(err) => panic!("cannot shut down connection: {err}"),
+    }
 
     // wait for EOF
     let mut buf = [0u8; 32];
